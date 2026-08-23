@@ -1,0 +1,30 @@
+name: Build Dylib
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Build Dylib
+      run: |
+        # Check if main.m exists
+        if [ ! -f "main.m" ]; then
+          echo "main.m file not found!"
+          exit 1
+        fi
+
+        # Compile the dylib
+        echo "Compiling main.m..."
+        clang -shared -framework Foundation -framework UIKit -o libhook.dylib main.m
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: dylib-file
+        path: libhook.dylib
