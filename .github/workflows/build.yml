@@ -25,6 +25,9 @@ jobs:
           -isysroot $(xcrun --sdk iphoneos --show-sdk-path) \
           -arch arm64 \
           -miphoneos-version-min=14.0 \
+          -Wno-error=implicit-function-declaration \
+          -Wno-implicit-function-declaration \
+          -Wno-int-to-pointer-cast \
           -framework Foundation \
           -framework UIKit \
           -o libhook.dylib main.m
