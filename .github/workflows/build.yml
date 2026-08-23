@@ -24,7 +24,7 @@ jobs:
         clang -shared -framework Foundation -framework UIKit -o libhook.dylib main.m
 
     - name: Upload Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: dylib-file
         path: libhook.dylib
