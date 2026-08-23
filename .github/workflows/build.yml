@@ -10,17 +10,11 @@ jobs:
     runs-on: macos-latest
 
     steps:
-    - name: Checkout
+    - name: Checkout Code
       uses: actions/checkout@v4.2.2
 
-    - name: Build iOS Dylib
+    - name: Compile iOS Dylib
       run: |
-        if [ ! -f "main.m" ]; then
-          echo "main.m file not found!"
-          exit 1
-        fi
-
-        echo "Compiling main.m for iOS arm64..."
         clang -dynamiclib \
           -isysroot $(xcrun --sdk iphoneos --show-sdk-path) \
           -arch arm64 \
