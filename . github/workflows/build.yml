@@ -1,0 +1,24 @@
+name: Build Dylib
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Compile Dylib
+        run: |
+          # Clone TweakKit headers agar zaroorat ho, lekin simple code ke liye Foundation kaafi hai
+          clang -dynamiclib -framework Foundation -framework UIKit -o libhook.dylib main.m -isysroot $(xcrun --sdk iphoneos --show-sdk-path) -arch arm64
+          
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: dylib-file
+          path: libhook.dylib
