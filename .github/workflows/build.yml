@@ -2,14 +2,15 @@ name: Build Dylib
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: macos-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Build Dylib
       run: |
@@ -19,9 +20,15 @@ jobs:
           exit 1
         fi
 
-        # Compile the dylib
+        # Compile the iOS dylib
         echo "Compiling main.m..."
-        clang -shared -framework Foundation -framework UIKit -o libhook.dylib main.m
+        clang -dynamiclib \
+          -isysroot $(xcrun --sdk iphoneos --show-sdk-path) \
+          -arch arm64 \
+          -miphoneos-version-min=14.0 \
+          -framework Foundation \
+          -framework UIKit \
+          -o libhook.dylib main.m
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
