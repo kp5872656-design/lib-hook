@@ -2,26 +2,25 @@ name: Build Dylib
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "master" ]
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: macos-latest
+
     steps:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Build Dylib
+    - name: Build iOS Dylib
       run: |
-        # Check if main.m exists
         if [ ! -f "main.m" ]; then
           echo "main.m file not found!"
           exit 1
         fi
 
-        # Compile the iOS dylib
-        echo "Compiling main.m..."
+        echo "Compiling main.m for iOS arm64..."
         clang -dynamiclib \
           -isysroot $(xcrun --sdk iphoneos --show-sdk-path) \
           -arch arm64 \
