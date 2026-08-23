@@ -11,7 +11,7 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v4.2.2
 
     - name: Build iOS Dylib
       run: |
@@ -25,15 +25,13 @@ jobs:
           -isysroot $(xcrun --sdk iphoneos --show-sdk-path) \
           -arch arm64 \
           -miphoneos-version-min=14.0 \
-          -Wno-error=implicit-function-declaration \
-          -Wno-implicit-function-declaration \
-          -Wno-int-to-pointer-cast \
+          -Wno-everything \
           -framework Foundation \
           -framework UIKit \
           -o libhook.dylib main.m
 
     - name: Upload Artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v4.4.3
       with:
         name: dylib-file
         path: libhook.dylib
